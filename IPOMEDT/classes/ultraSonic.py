@@ -37,6 +37,9 @@ class UltraSonic:
 
         return round(distance / 2, 3)
 
+    def is_nearby(self, disance: float):
+        return self.poll() < disance
+
 
 def main() -> None:
     GPIO.cleanup()
@@ -47,7 +50,9 @@ def main() -> None:
 
     for i in range(0, 100):
         print(sensor.poll())
-        time.sleep(0.1)
+        time.sleep(0.3)
+        print(sensor.is_nearby(10))
+        print(sensor.is_nearby(20))
 
 if __name__ == '__main__':
     main()
