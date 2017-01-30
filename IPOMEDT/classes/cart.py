@@ -49,16 +49,16 @@ def main() -> None:
 
     cart = Cart()
 
-    cart.forward(12)
+    cart.forward(20)
     time.sleep(0.7)
 
-    cart.backward(12)
+    cart.backward(20)
     time.sleep(0.7)
 
-    cart.turn_left(17, -0.6)
+    cart.turn_left(20, 0.1)
     time.sleep(0.9)
 
-    cart.turn_right(17, -0.6)
+    cart.turn_right(20, 0.1)
     time.sleep(0.9)
 
     cart.stop()
