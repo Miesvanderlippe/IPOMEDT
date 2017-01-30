@@ -6,60 +6,53 @@ class Motor:
 
     def __init__(self, pins: list):
 
-        self.pin1 = pins[0]
-        self.pin2 = pins[1]
+        GPIO.setup(pins[0], GPIO.OUT)
+        GPIO.setup(pins[1], GPIO.OUT)
 
-        GPIO.setup(self.pin1, GPIO.OUT)
-        GPIO.setup(self.pin2, GPIO.OUT)
+        self.pin1 = GPIO.PWM(pins[0], 30)
+        self.pin2 = GPIO.PWM(pins[1], 30)
 
-        GPIO.output(self.pin1, 0)
-        GPIO.output(self.pin2, 0)
+        self.pin1.start(0)
+        self.pin2.start(0)
 
-    def forward(self):
-        GPIO.output(self.pin1, 1)
-        GPIO.output(self.pin2, 0)
+    def forward(self, speed: int = 100):
+        self.pin1.ChangeDutyCycle(0)
+        self.pin2.ChangeDutyCycle(speed)
 
-    def backward(self):
-        GPIO.output(self.pin1, 0)
-        GPIO.output(self.pin2, 1)
+    def backward(self, speed: int = 100):
+        self.pin1.ChangeDutyCycle(speed)
+        self.pin2.ChangeDutyCycle(0)
 
     def stop(self):
-        GPIO.output(self.pin1, 0)
-        GPIO.output(self.pin2, 0)
+        self.pin1.ChangeDutyCycle(0)
+        self.pin2.ChangeDutyCycle(0)
 
 
 def main() -> None:
-    GPIO.cleanup()
+
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
     testmotor1 = Motor([10, 9])
     testmotor2 = Motor([8, 7])
 
-    testmotor1.forward()
-    time.sleep(0.5)
+    testmotor1.forward(30)
+    time.sleep(1)
 
-    testmotor1.backward()
-    time.sleep(0.5)
+    testmotor1.backward(30)
+    time.sleep(1)
 
     testmotor1.stop()
 
-    testmotor2.forward()
-    time.sleep(0.5)
+    testmotor2.forward(30)
+    time.sleep(1)
 
-    testmotor2.backward()
-    time.sleep(0.5)
+    testmotor2.backward(30)
+    time.sleep(1)
 
     testmotor2.stop()
 
-    for i in range(0, 50):
-        testmotor2.forward()
-        time.sleep(0.012)
-
-        testmotor2.backward()
-        time.sleep(0.012)
-
-        testmotor2.stop()
+    GPIO.cleanup()
 
 if __name__ == '__main__':
     main()
