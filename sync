@@ -30,7 +30,7 @@ process.argv.forEach(function(param, index){
   if(param.indexOf("--") === 0) {
     var _value = param.slice(2).split("=");
     var key = _value.shift();
-    var value = _value.join("");    
+    var value = _value.join("");
     switch(key) {
       case "exclude":
         syncExcludeFile = value;
@@ -50,7 +50,7 @@ process.argv.forEach(function(param, index){
     switch(cmds.shift()) {
       case "source":
         syncLocalPath = stripTrailingSlash(value);
-        watchPath = syncLocalPath;          
+        watchPath = syncLocalPath;
         break;
       case "userhostport":
         try {
@@ -70,7 +70,7 @@ process.argv.forEach(function(param, index){
         break;
     }
   } else {
-  }    
+  }
 });
 
 if(!syncLocalPath) {
@@ -97,7 +97,7 @@ if(syncExcludeFile){
   if(!fs.existsSync(syncExcludeFile)) {
     console.log(usage("Unable to open exclude file " + syncExcludeFile));
     return false;
-  }    
+  }
 }
 
 var watches = [];
@@ -114,10 +114,10 @@ function init() {
   if(watches && watches.length > 0) {
     watches.forEach(function(dir){
       fs.unwatchFile(dir);
-    });    
+    });
   }
   watches = [];
-  readdir(watchPath);  
+  readdir(watchPath);
 }
 
 function readdir(path) {
@@ -149,13 +149,13 @@ function startWatching(dir) {
       startSyncToolTimeout = setTimeout(function(){
         sync();
       }, startSyncToolDelay);
-      
+
       if(restartDirectoryReadTimeout) clearTimeout(restartDirectoryReadTimeout);
       restartDirectoryReadTimeout = setTimeout(function(){
         init();
       }, 1000);
 
-    });    
+    });
   } catch(e) {
     console.error("Unable to watch: " + dir);
   }
@@ -171,31 +171,31 @@ function sync() {
   console.log("Sync #" + syncCount + " " + addLeadingZero(date.getHours()) + ":" + addLeadingZero(date.getMinutes()) + ":" + addLeadingZero(date.getSeconds()));
 
   var command = [
-    "/usr/local/bin/rsync",
+    "/usr/bin/rsync",
     "--recursive",
     "--delete-during",
     "--force",
     "--progress",
     "--rsh='ssh -p " + sshPort + "'",
     syncLocalPath + "/",
-    sshUser + "@" + sshHost + ":" + syncRemotePath 
+    sshUser + "@" + sshHost + ":" + syncRemotePath
   ];
 
   if(syncExcludeFile){
     if(fs.existsSync(syncExcludeFile)) {
-      command.splice(-2, 0, "--exclude-from " + syncExcludeFile);  
+      command.splice(-2, 0, "--exclude-from " + syncExcludeFile);
     } else {
       console.log("Unable to open exclude file " + syncExcludeFile);
       syncingFlag = false;
       return false;
-    }    
+    }
   }
 
   if(syncSimulate) command.splice(-2, 0, "--dry-run");
 
   var ls = cp.exec(command.join(" "), function(error, stdout, stderr) {
     if(error || stderr) {
-      console.log(stderr); 
+      console.log(stderr);
     } else {
       console.log(" - done");
     }
@@ -215,7 +215,7 @@ function usage(errorString) {
     str += "!!! " + errorString + "\n\n";
   }
   else {
-    str += "sync  version " + VERSION + "\n";     
+    str += "sync  version " + VERSION + "\n";
   }
 
   str += "Usage:\n sync [option]... source user@host[:port] destination\n\n";
