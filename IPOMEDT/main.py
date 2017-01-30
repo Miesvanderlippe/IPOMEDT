@@ -3,11 +3,13 @@ from IPOMEDT.classes.lineFollower import LineFollower
 from IPOMEDT.classes.ultraSonic import UltraSonic
 
 
-def main():
-    motor1 = Motor()
-    motor2 = Motor()
-    ultraSonic = UltraSonic()
-    lineFollower = LineFollower()
+def main() -> None:
+    testmotor1 = Motor([10, 9])
+    testmotor2 = Motor([8, 7])
+    linefollower = LineFollower(25)
+    ultrasonic = UltraSonic([17, 18])
 
-if __name__ == "main":
+    raise NotImplementedError()
+
+if __name__ == "__main__":
     main()
