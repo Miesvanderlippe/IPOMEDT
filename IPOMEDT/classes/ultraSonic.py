@@ -21,6 +21,7 @@ class UltraSonic:
         GPIO.output(self.trigger, False)
 
         start_time = time.time()
+        stop_time = start_time
 
         while GPIO.input(self.echo) == 0:
             start_time = time.time()
