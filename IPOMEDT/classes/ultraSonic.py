@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+from timeit import default_timer as timer
 
 
 class UltraSonic:
@@ -8,12 +9,24 @@ class UltraSonic:
 
         self.trigger = pins[0]
         self.echo = pins[1]
+        self.last_poll = timer()
 
         GPIO.setup(self.trigger, GPIO.OUT)
         GPIO.setup(self.echo, GPIO.IN)
 
-    def poll(self):
+    def poll(self, depth=3):
+
+        if depth < 1:
+            return 0
+
         GPIO.output(self.trigger, False)
+
+        wait = 0.5 - (timer() - self.last_poll)
+        self.last_poll = timer()
+
+        if wait > 0:
+            time.sleep(wait)
+            print("Waiting {0}".format(wait))
 
         # poll
         GPIO.output(self.trigger, True)
@@ -30,8 +43,12 @@ class UltraSonic:
             stop_time = time.time()
 
             if stop_time - start_time >= 0.04:
-                stop_time = start_time
-                break
+                retry = self.poll(depth - 1)
+
+                if retry > 0:
+                    return retry
+                else:
+                    return 1000
 
         elapsed_time = stop_time - start_time
         distance = elapsed_time * 34326
