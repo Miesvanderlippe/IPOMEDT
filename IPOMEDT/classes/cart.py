@@ -21,9 +21,8 @@ class Cart:
         self.r_light = Light(20)
         self.ultrasonic = UltraSonic([17, 18])
         self.prev_turn = 'left'
-
-        thread = Thread(target=self.siren_loop)
-        thread.start()
+        self.running = False
+        self.thread = None
 
     def turn_right(self, speed, ratio):
         self.prev_turn = 'right'
@@ -63,8 +62,18 @@ class Cart:
         self.r_wheel.backward(speed)
         self.l_wheel.backward(speed)
 
+    def start_sirene(self):
+        self.running = True
+        self.thread = Thread(target=self.siren_loop)
+        self.thread.start()
+
+    def stop_sirene(self):
+        self.running = False
+        self.thread.do_run = False
+        self.thread.join()
+
     def siren_loop(self):
-        while True:
+        while self.running:
             self.l_light.dim(100)
             self.r_light.dim(100)
             time.sleep(0.05)
@@ -93,10 +102,16 @@ def main() -> None:
 
     cart = Cart()
 
-    time.sleep(10)
-    print("Twerkt dit?")
-    time.sleep(10)
-    print("'t werkt")
+    cart.start_sirene()
+
+    time.sleep(2)
+    cart.stop_sirene()
+
+    time.sleep(2)
+    cart.start_sirene()
+
+    time.sleep(2)
+    cart.stop_sirene()
 
 if __name__ == "__main__":
     main()
