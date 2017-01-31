@@ -37,7 +37,7 @@ def main() -> None:
                     if direction_time <= 30 :
                         #kijk rechts
                         print("kijk naar rechts")
-                        direction_time--
+                        direction_time =- 1
 
                     #timer terug naar 30
                     direction_time = 30
@@ -45,7 +45,7 @@ def main() -> None:
                     if direction_time <= 30 :
                         #kijk links
                         print("kijk naar links")
-                        direction_time--
+                        direction_time =- 1
 
                     #timer terug naar 30
                     direction_time = 30
@@ -53,7 +53,7 @@ def main() -> None:
                     if direction_time <= 30 :
                         #kijk vooruit
                         print("kijk vooruit")
-                        direction_time--
+                        direction_time =- 1
 
                     #timer terug naar 30
                     direction_time = 30
