@@ -24,14 +24,14 @@ def main() -> None:
 
     while True:
         if distance > 15:
-            testmotor1.forward(80)
-            testmotor2.forward(80)
+            testmotor1.forward()
+            testmotor2.forward()
             time.sleep(0.5)
             testmotor1.stop()
             testmotor2.stop()
         else:
-            testmotor1.forward(20)
-            testmotor2.backward(10)
+            testmotor1.forward()
+            testmotor2.backward()
             time.sleep(0.5)
             testmotor1.stop()
             testmotor2.stop()
