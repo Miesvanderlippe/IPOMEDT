@@ -5,6 +5,7 @@ from classes.carClass import CarClass
 import RPi.GPIO as GPIO
 from classes.lineFollower import LineFollower
 
+
 def main() -> None:
 
     GPIO.setmode(GPIO.BCM)
@@ -18,13 +19,13 @@ def main() -> None:
     lineFollow = LineFollower(25)
     carClass = CarClass()
 
-    direction_time =  30
+    direction_time = 30
 
     try:
         while True:
             light.turn_on()
             time.sleep(0.1)
-            if lineFollow.poll() == False:
+            if lineFollow.poll() is False:
                 print("Blue line")
                 motor1.backward(5)
                 motor2.backward(5)
@@ -35,35 +36,34 @@ def main() -> None:
                 motor2.stop()
                 time.sleep(0.5)
 
-                while lineFollow.poll() == True:
+                while lineFollow.poll() is True:
                     time.sleep(0.5)
                     if direction_time <= 30:
-                        #kijk rechts
+                        # kijk rechts
                         print("kijk naar rechts " + str(lineFollow.poll()))
-                        #motor1.forward(15)
-                        #motor2.stop()
-                        direction_time =- 1
+                        carClass.turnRight(15, 5)
+                        direction_time = direction_time - 1
 
-                    #timer terug naar 30
+                    # timer terug naar 30
                     direction_time = 30
 
                     if direction_time <= 30:
-                        #kijk links
+                        # kijk links
                         print("kijk naar links " + str(lineFollow.poll()))
                         carClass.turnLeft(15, 5)
-                        direction_time =- 1
+                        direction_time = direction_time - 1
 
-                    #timer terug naar 30
+                    # timer terug naar 30
                     direction_time = 30
 
                     if direction_time <= 30:
-                        #kijk vooruit
+                        # kijk vooruit
                         print("kijk vooruit " + str(lineFollow.poll()))
-                        #motor1.backward(15)
-                        #motor2.backward(15)
-                        direction_time =- 1
+                        motor1.forward(15)
+                        motor2.forward(15)
+                        direction_time = direction_time - 1
 
-                    #timer terug naar 30
+                    # timer terug naar 30
                     direction_time = 30
     except KeyboardInterrupt:
         GPIO.cleanup()
