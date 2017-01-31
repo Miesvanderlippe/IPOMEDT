@@ -22,12 +22,12 @@ def main() -> None:
         if distance < 10 and distance > 1:
             cart.stop()
 
-        elif distance < 30 and distance > 1:
-            cart.forward(12)
+        elif distance < 50 and distance > 1:
+            cart.forward(distance * 2)
             time.sleep(0.2)
             cart.stop()
 
-        elif distance > 30 or distance < 1:
+        elif distance > 50 or distance < 1:
 
             print("{0}".format(cart.prev_turn))
 
@@ -40,6 +40,15 @@ def main() -> None:
                 else:
                     cart.turn_left_tick(i)
 
+                print("Turning {0} {1}".format(cart.prev_turn, i))
+
+                distance = cart.ultrasonic.poll()
+
+                if distance > 1 and distance < 30:
+                    break
+
+            for i in range(0, 10):
+                cart.turn_right_tick(1)
                 distance = cart.ultrasonic.poll()
 
                 if distance > 1 and distance < 30:
