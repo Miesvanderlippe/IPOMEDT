@@ -1,6 +1,9 @@
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
 
 class Motor:
 
@@ -29,6 +32,7 @@ class Motor:
 
 
 def main() -> None:
+
     GPIO.cleanup()
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)

@@ -15,14 +15,35 @@ def main() -> None:
     linefollower = LineFollower(25)
     ultrasonic = UltraSonic([17, 18])
 
-    while True:
-        time.sleep(0.5)
+    # recht activeren gaat links
+    # testmotor1.forward()
+
+    # links activeren gaat rechter
+    # testmotor2.forward()
+
+    # wacht 0.1 seconden voordat hij begint met het uitvoeren van script
+    time.sleep(0.1)
+
+    while LineFollower.poll():
+        # bij het begin van de script ga naar voor
         testmotor1.forward()
-        if ultrasonic.poll() == 10:
+        testmotor2.forward()
+        # Als er een obstekel gedectecteerd wordt
+        if ultrasonic.poll() == 10:  # 10 centimeter
+            # Voer de volgende uit
+
+            # remmen Stop de wilen met rijden
+            testmotor1.stop()
+            testmotor2.stop()
+
             time.sleep(0.5)
+            # Ga naar Achter
             testmotor1.backward()
             testmotor2.backward()
+            time.sleep(0.5)
+
         else:
+            # wat moet er gebeuren als geen opstakel is
             for i in range(0, 50):
                 testmotor2.forward()
                 time.sleep(0.012)
