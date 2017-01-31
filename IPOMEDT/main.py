@@ -24,7 +24,7 @@ def main() -> None:
     # wacht 0.1 seconden voordat hij begint met het uitvoeren van script
     time.sleep(0.1)
 
-    while LineFollower.poll():
+    while linefollower.poll():
         # bij het begin van de script ga naar voor
         testmotor1.forward()
         testmotor2.forward()
