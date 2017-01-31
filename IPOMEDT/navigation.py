@@ -1,3 +1,4 @@
+import time
 from classes import light
 from classes import motor
 from classes import lineFollower
@@ -15,22 +16,47 @@ def main() -> None:
 
     lineFollow = LineFollower()
 
+    direction_time =  30
+
     try:
         while True:
             light.turn_on()
             sleep(0.1)
             if lineFollow == True :
                 print("Blue line")
-                motor1.forward()
-                motor2.forward()
+                motor1.forward(30)
+                motor2.forward(30)
                 sleep(0.2)
             else:
                 print("not blue line")
                 motor1.stop()
                 motor2.stop()
                 sleep(0.2)
-                #kijk naar rechts
-                #kijk naar links
+
+                while lineFollow == False :
+                    if direction_time <= 30 :
+                        #kijk rechts
+                        print("kijk naar rechts")
+                        direction_time--
+
+                    #timer terug naar 30
+                    direction_time = 30
+
+                    if direction_time <= 30 :
+                        #kijk links
+                        print("kijk naar links")
+                        direction_time--
+
+                    #timer terug naar 30
+                    direction_time = 30
+
+                    if direction_time <= 30 :
+                        #kijk vooruit
+                        print("kijk vooruit")
+                        direction_time--
+
+                    #timer terug naar 30
+                    direction_time = 30
 
     except KeyboardInterrupt:
         GPIO.cleanup()
