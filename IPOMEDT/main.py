@@ -20,7 +20,7 @@ def main() -> None:
     testmotor2 = Motor([8, 7])
 
     sensor = UltraSonic([17, 18])
-    distance = sensor.poll
+    distance = sensor.poll()
 
     if distance > 1:
         testmotor1.forward()
