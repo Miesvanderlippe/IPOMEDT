@@ -2,9 +2,15 @@ from classes.motor import Motor
 from classes.lineFollower import LineFollower
 from classes.ultraSonic import UltraSonic
 from classes.light import Light
+from RPi import GPIO
+import time
 
 
 def main() -> None:
+    GPIO.cleanup()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+
     testmotor1 = Motor([10, 9])
     testmotor2 = Motor([8, 7])
     linefollower = LineFollower(25)
@@ -19,11 +25,15 @@ def main() -> None:
     if distance > 1:
         testmotor1.forward()
         testmotor2.forward()
+        time.sleep(0.5)
+        testmotor1.stop()
+        testmotor2.stop()
     elif distance < 1:
         testmotor1.forward()
-        time.sleep(0.5)
         testmotor2.backward()
         time.sleep(0.5)
+        testmotor1.stop()
+        testmotor2.stop()
 
 
 if __name__ == "__main__":
