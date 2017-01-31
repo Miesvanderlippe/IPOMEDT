@@ -1,6 +1,6 @@
-from IPOMEDT.classes.motor import Motor
-from IPOMEDT.classes.lineFollower import LineFollower
-from IPOMEDT.classes.ultraSonic import UltraSonic
+from classes.motor import Motor
+from classes.lineFollower import LineFollower
+from classes.ultraSonic import UltraSonic
 
 
 def main() -> None:
