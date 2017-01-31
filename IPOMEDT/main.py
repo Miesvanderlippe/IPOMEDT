@@ -22,19 +22,19 @@ def main() -> None:
     sensor = UltraSonic([17, 18])
     distance = sensor.poll()
 
-    if distance > 1:
-        testmotor1.forward()
-        testmotor2.forward()
-        time.sleep(0.5)
-        testmotor1.stop()
-        testmotor2.stop()
-    elif distance < 1:
-        testmotor1.forward()
-        testmotor2.backward()
-        time.sleep(0.5)
-        testmotor1.stop()
-        testmotor2.stop()
-
+    while True:
+        if distance > 15:
+            testmotor1.forward(80)
+            testmotor2.forward(80)
+            time.sleep(0.5)
+            testmotor1.stop()
+            testmotor2.stop()
+        else:
+            testmotor1.forward(20)
+            testmotor2.backward(10)
+            time.sleep(0.5)
+            testmotor1.stop()
+            testmotor2.stop()
 
 if __name__ == "__main__":
     main()
