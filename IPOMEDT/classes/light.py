@@ -5,14 +5,18 @@ import time
 class Light:
 
     def __init__(self, pin):
-        self.pin = pin
-        GPIO.setup(self.pin, GPIO.OUT)
+        GPIO.setup(pin, GPIO.OUT)
+        self.pin = GPIO.PWM(pin, 1000)
+        self.pin.start(0)
 
     def turn_on(self):
-        GPIO.output(self.pin, GPIO.HIGH)
+        self.pin.ChangeDutyCycle(100)
 
     def turn_off(self):
-        GPIO.output(self.pin, GPIO.LOW)
+        self.pin.ChangeDutyCycle(0)
+
+    def dim(self, percentage):
+        self.pin.ChangeDutyCycle(percentage)
 
 
 def main():
@@ -27,6 +31,11 @@ def main():
 
     right_light.turn_on()
     time.sleep(1)
+
+    for i in range(0, 100):
+        right_light.dim(i)
+        left_light.dim(i)
+        time.sleep(0.1)
 
     right_light.turn_off()
     left_light.turn_off()
