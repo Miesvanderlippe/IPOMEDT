@@ -44,11 +44,11 @@ class Cart:
 
     def turn_left_tick(self, ticks=1, speed=15, ratio=-1):
         self.turn_left(speed, ratio)
-        time.sleep(0.1 * ticks)
+        time.sleep(0.03 * ticks)
 
     def turn_right_tick(self, ticks=1, speed=15, ratio=-1):
         self.turn_right(speed, ratio)
-        time.sleep(0.1 * ticks)
+        time.sleep(0.03 * ticks)
 
     def stop(self):
         self.l_wheel.stop()
@@ -71,6 +71,9 @@ class Cart:
         self.running = False
         self.thread.do_run = False
         self.thread.join()
+
+        self.l_light.dim(70)
+        self.r_light.dim(70)
 
     @property
     def siren_running(self):

@@ -25,8 +25,8 @@ class SearchAndDestroy:
                 if not self.cart.siren_running:
                     self.cart.start_sirene()
 
-                # self.cart.forward(40)
-                time.sleep(0.2)
+                self.cart.forward(20)
+                time.sleep(0.1)
                 self.cart.stop()
 
             else:
@@ -47,16 +47,15 @@ class SearchAndDestroy:
         if 1 < distance < self.max_scan_distance:
             return distance
 
-        for i in range(0, 12):
+        for i in range(5, 20):
             time.sleep(0.1)
             direction = self.cart.prev_turn != 'right'
 
             if direction:
-                self.cart.turn_right_tick(i)
+                self.cart.turn_right_tick(i * 0.7, 22)
             else:
-                self.cart.turn_left_tick(i)
+                self.cart.turn_left_tick(i * 0.7, 22)
 
-            time.sleep(0.1)
             distance = self.poll_dis()
             print(distance)
 
