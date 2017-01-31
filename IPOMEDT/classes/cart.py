@@ -17,8 +17,8 @@ class Cart:
     def __init__(self):
         self.l_wheel = Motor([9, 10])
         self.r_wheel = Motor([7, 8])
-        self.l_light = Light(21)
-        self.r_light = Light(20)
+        self.l_light = Light(20)
+        self.r_light = Light(21)
         self.ultrasonic = UltraSonic([17, 18])
         self.prev_turn = 'left'
         self.running = False
@@ -46,9 +46,9 @@ class Cart:
         self.turn_left(speed, ratio)
         time.sleep(0.1 * ticks)
 
-    def turn_right_tick(self, ticks=1, speed=21, ratio=-1):
+    def turn_right_tick(self, ticks=1, speed=15, ratio=-1):
         self.turn_right(speed, ratio)
-        time.sleep(0.06 * ticks)
+        time.sleep(0.1 * ticks)
 
     def stop(self):
         self.l_wheel.stop()
@@ -71,6 +71,10 @@ class Cart:
         self.running = False
         self.thread.do_run = False
         self.thread.join()
+
+    @property
+    def siren_running(self):
+        return self.running
 
     def siren_loop(self):
         while self.running:
