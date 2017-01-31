@@ -11,25 +11,11 @@ def main() -> None:
     GPIO.setwarnings(False)
 
     cart = Cart()
-    ultrasonic = UltraSonic([17, 18])
     direction = False
-    loopcount = 0
 
-    for i in range(1, 16):
-        distance = ultrasonic.poll()
-        print(distance)
+    while True:
 
-        if i % 2 == 1:
-            cart.turn_right(17, -1)
-        else:
-            cart.turn_left(17, -1)
-
-        time.sleep(0.07 * i)
-        cart.stop()
-
-    while True and False:
-
-        distance = ultrasonic.poll()
+        distance = cart.ultrasonic.poll()
 
         print("dis: {0}".format(distance))
 
@@ -37,26 +23,27 @@ def main() -> None:
             cart.stop()
 
         elif distance < 30 and distance > 1:
-            cart.forward(16)
+            cart.forward(12)
             time.sleep(0.2)
             cart.stop()
 
         elif distance > 30 or distance < 1:
 
-            if (loopcount % 10) == 0:
-                direction = not direction
+            print("{0}".format(cart.prev_turn))
 
-            loopcount += 1
+            for i in range(0, 10):
 
-            print("{0} : {1}".format(direction, loopcount))
+                direction = cart.prev_turn != 'right'
 
-            if direction:
-                cart.turn_right(17, -1)
-            else:
-                cart.turn_left(17, -1)
+                if direction:
+                    cart.turn_right_tick(i)
+                else:
+                    cart.turn_left_tick(i)
 
-            time.sleep(0.2)
-            cart.stop()
+                distance = cart.ultrasonic.poll()
+
+                if distance > 1 and distance < 30:
+                    break
 
 
 if __name__ == "__main__":

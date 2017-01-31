@@ -43,7 +43,7 @@ class Cart:
         self.turn_right(speed, ratio)
         time.sleep(0.06 * ticks)
 
-    def stop(selgf):
+    def stop(self):
         self.l_wheel.stop()
         self.r_wheel.stop()
 
