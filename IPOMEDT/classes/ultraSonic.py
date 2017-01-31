@@ -3,7 +3,6 @@ import time
 
 
 class UltraSonic:
-
     def __init__(self, pins: list):
 
         self.trigger = pins[0]
@@ -21,6 +20,7 @@ class UltraSonic:
         GPIO.output(self.trigger, False)
 
         start_time = time.time()
+        stop_time = start_time
 
         while GPIO.input(self.echo) == 0:
             start_time = time.time()
@@ -48,6 +48,7 @@ def main() -> None:
     for i in range(0, 100):
         print(sensor.poll())
         time.sleep(0.1)
+
 
 if __name__ == '__main__':
     main()
