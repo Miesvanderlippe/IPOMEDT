@@ -2,9 +2,14 @@ from classes.motor import Motor
 from classes.lineFollower import LineFollower
 from classes.ultraSonic import UltraSonic
 import time
+from RPi import GPIO
 
 
 def main() -> None:
+    GPIO.cleanup()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+
     testmotor1 = Motor([10, 9])
     testmotor2 = Motor([8, 7])
     linefollower = LineFollower(25)
