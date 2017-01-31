@@ -16,25 +16,25 @@ def main() -> None:
     linefollower = LineFollower(25)
     ultrasonic = UltraSonic([17, 18])
 
-    testmotor1 = Motor([10, 9])
-    testmotor2 = Motor([8, 7])
 
     sensor = UltraSonic([17, 18])
     distance = sensor.poll()
 
     while True:
+        distance = sensor.poll()
         if distance > 15:
-            testmotor1.forward(80)
-            testmotor2.forward(80)
+            testmotor1.forward()
+            testmotor2.forward()
             time.sleep(0.5)
             testmotor1.stop()
             testmotor2.stop()
         else:
-            testmotor1.forward(20)
-            testmotor2.backward(10)
+            testmotor1.forward()
+            testmotor2.backward()
             time.sleep(0.5)
             testmotor1.stop()
             testmotor2.stop()
 
 if __name__ == "__main__":
     main()
+
