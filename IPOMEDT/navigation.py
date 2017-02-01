@@ -1,15 +1,15 @@
 import time
+import RPi.GPIO as GPIO
 from classes.light import Light
 from classes.motor import Motor
 from classes.carClass import CarClass
-import RPi.GPIO as GPIO
 from classes.lineFollower import LineFollower
 
 
 def main() -> None:
 
     GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
+    GPIO.setwarnings(True)
 
     motor1 = Motor([10, 9])
     motor2 = Motor([8, 7])
@@ -25,10 +25,10 @@ def main() -> None:
         while True:
             light.turn_on()
             time.sleep(0.1)
-            if lineFollow.poll() is False:
+            if lineFollow.poll() is True:
                 print("Blue line")
-                motor1.backward(5)
-                motor2.backward(5)
+                motor1.forward(5)
+                motor2.forward(5)
                 time.sleep(0.2)
             else:
                 print("not blue line " + str(lineFollow.poll()))
@@ -36,7 +36,7 @@ def main() -> None:
                 motor2.stop()
                 time.sleep(0.5)
 
-                while lineFollow.poll() is True:
+                while lineFollow.poll() is False:
                     time.sleep(0.5)
                     if direction_time <= 30:
                         # kijk rechts
