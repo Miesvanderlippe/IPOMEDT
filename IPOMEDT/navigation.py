@@ -45,7 +45,7 @@ def main() -> None:
                     motor1.backward(12 + timer_right)
                     motor2.forward(12 + timer_right)
                     time.sleep(0.2)
-                    timer_right = timer_right + 5
+                    timer_right = timer_right + 2.5
 
                 # if voor rechts kijken met counter
                 if timer_left < 20:
