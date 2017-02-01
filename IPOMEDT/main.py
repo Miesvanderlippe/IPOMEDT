@@ -33,9 +33,12 @@ def main() -> None:
             # remmen stop de wilen met rijden
             testmotor1.stop()
             testmotor2.stop()
+            time.sleep(0.25)
+            testmotor1.forward()
         else:
             testmotor1.forward()
             testmotor2.forward()
     # wat moet er gebeuren als er een witten stipje is gevonden
+
 if __name__ == "__main__":
     main()
