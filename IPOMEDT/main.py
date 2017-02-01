@@ -38,7 +38,6 @@ def main() -> None:
         else:
             testmotor1.forward()
             testmotor2.forward()
-    # wat moet er gebeuren als er een witten stipje is gevonden
 
     testmotor1.stop()
     testmotor2.stop()
