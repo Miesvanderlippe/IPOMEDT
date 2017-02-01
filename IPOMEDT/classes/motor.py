@@ -6,26 +6,26 @@ class Motor:
 
     def __init__(self, pins: list):
 
-        self.pin1 = pins[0]
-        self.pin2 = pins[1]
+        GPIO.setup(pins[0], GPIO.OUT)
+        GPIO.setup(pins[1], GPIO.OUT)
 
-        GPIO.setup(self.pin1, GPIO.OUT)
-        GPIO.setup(self.pin2, GPIO.OUT)
+        self.pin1 = GPIO.PWM(pins[0], 30)
+        self.pin2 = GPIO.PWM(pins[1], 30)
 
-        GPIO.output(self.pin1, 0)
-        GPIO.output(self.pin2, 0)
+        self.pin1.start(0)
+        self.pin2.start(0)
 
-    def forward(self):
-        GPIO.output(self.pin1, 1)
-        GPIO.output(self.pin2, 0)
+    def forward(self, speed: int = 100):
+        self.pin1.ChangeDutyCycle(0)
+        self.pin2.ChangeDutyCycle(speed)
 
-    def backward(self):
-        GPIO.output(self.pin1, 0)
-        GPIO.output(self.pin2, 1)
+    def backward(self, speed: int = 100):
+        self.pin1.ChangeDutyCycle(speed)
+        self.pin2.ChangeDutyCycle(0)
 
     def stop(self):
-        GPIO.output(self.pin1, 0)
-        GPIO.output(self.pin2, 0)
+        self.pin1.ChangeDutyCycle(0)
+        self.pin2.ChangeDutyCycle(0)
 
 
 def main() -> None:
