@@ -1,4 +1,3 @@
-from classes.ultraSonic import UltraSonic
 from classes.cart import Cart
 import RPi.GPIO as GPIO
 import time
