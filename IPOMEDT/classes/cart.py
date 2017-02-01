@@ -42,13 +42,13 @@ class Cart:
             self.r_wheel.backward(speed * (ratio * -1))
             self.l_wheel.forward(speed)
 
-    def turn_left_tick(self, ticks=1, speed=15, ratio=-1):
+    def turn_left_tick(self, ticks=1, speed=20, ratio=-1):
         self.turn_left(speed, ratio)
-        time.sleep(0.03 * ticks)
+        time.sleep(0.05 * ticks)
 
-    def turn_right_tick(self, ticks=1, speed=15, ratio=-1):
+    def turn_right_tick(self, ticks=1, speed=20, ratio=-1):
         self.turn_right(speed, ratio)
-        time.sleep(0.03 * ticks)
+        time.sleep(0.05 * ticks)
 
     def stop(self):
         self.l_wheel.stop()
