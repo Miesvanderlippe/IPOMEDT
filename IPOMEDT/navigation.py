@@ -26,12 +26,12 @@ def main() -> None:
             light.turn_on()
             time.sleep(0.1)
             if lineFollow.poll() is True:
-                print("Blue line")
-                motor1.forward(5)
-                motor2.forward(5)
+                print("Black line")
+                # motor1.forward(12)
+                # motor2.forward(12)
                 time.sleep(0.2)
             else:
-                print("not blue line " + str(lineFollow.poll()))
+                print("not black line " + str(lineFollow.poll()))
                 motor1.stop()
                 motor2.stop()
                 time.sleep(0.5)
@@ -41,7 +41,7 @@ def main() -> None:
                     if direction_time <= 30:
                         # kijk rechts
                         print("kijk naar rechts " + str(lineFollow.poll()))
-                        carClass.turnRight(15, 5)
+                        # carClass.turnRight(12, 5)
                         direction_time = direction_time - 1
 
                     # timer terug naar 30
@@ -50,7 +50,7 @@ def main() -> None:
                     if direction_time <= 30:
                         # kijk links
                         print("kijk naar links " + str(lineFollow.poll()))
-                        carClass.turnLeft(15, 5)
+                        # carClass.turnLeft(12, 5)
                         direction_time = direction_time - 1
 
                     # timer terug naar 30
@@ -59,8 +59,8 @@ def main() -> None:
                     if direction_time <= 30:
                         # kijk vooruit
                         print("kijk vooruit " + str(lineFollow.poll()))
-                        motor1.forward(15)
-                        motor2.forward(15)
+                        # motor1.forward(12)
+                        # motor2.forward(12)
                         direction_time = direction_time - 1
 
                     # timer terug naar 30
