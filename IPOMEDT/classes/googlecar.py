@@ -42,21 +42,17 @@ def main() -> None:
     googleCar.rechterwiel.stop()
     while True:
         # print(sensor.poll())
-        if sensor.poll() > 15:
+        if sensor.poll() > 6:
 
             randomRichting = random.choice([1, 2, 3])
 
             if randomRichting == 1:
-                googleCar.linkerwiel.stop()
-                googleCar.rechterwiel.stop()
                 print("naar Links draaien")
                 googleCar.left_light.turn_on()
                 googleCar.linksaf(50)
                 time.sleep(0.2)
                 googleCar.left_light.turn_off()
-                if sensor.poll() > 15:
-                    googleCar.linkerwiel.stop()
-                    googleCar.rechterwiel.stop()
+                if sensor.poll() > 6:
                     print("Rijden.....")
                     googleCar.left_light.turn_on()
                     googleCar.right_light.turn_on()
@@ -66,8 +62,6 @@ def main() -> None:
                     googleCar.left_light.turn_off()
                     googleCar.right_light.turn_off()
                 else:
-                    googleCar.linkerwiel.stop()
-                    googleCar.rechterwiel.stop()
                     print("naar Rechts draaien")
                     googleCar.right_light.turn_on()
                     googleCar.rechtsaf(50)
@@ -75,16 +69,12 @@ def main() -> None:
                     googleCar.right_light.turn_off()
 
             elif randomRichting == 2:
-                googleCar.linkerwiel.stop()
-                googleCar.rechterwiel.stop()
                 print("naar Rechts draaien")
                 googleCar.rechtsaf(50)
                 googleCar.right_light.turn_on()
                 time.sleep(0.2)
                 googleCar.left_light.turn_off()
-                if sensor.poll() > 15:
-                    googleCar.linkerwiel.stop()
-                    googleCar.rechterwiel.stop()
+                if sensor.poll() > 6:
                     print("Rijden.....")
                     googleCar.left_light.turn_on()
                     googleCar.right_light.turn_on()
@@ -94,17 +84,13 @@ def main() -> None:
                     googleCar.left_light.turn_off()
                     googleCar.right_light.turn_off()
                 else:
-                    googleCar.linkerwiel.stop()
-                    googleCar.rechterwiel.stop()
                     print("naar Links draaien")
                     googleCar.left_light.turn_on()
                     googleCar.linksaf(50)
                     time.sleep(0.4)
                     googleCar.left_light.turn_off()
             elif randomRichting == 3:
-                if sensor.poll() > 15:
-                    googleCar.linkerwiel.stop()
-                    googleCar.rechterwiel.stop()
+                if sensor.poll() > 6:
                     print("Rijden.....")
                     googleCar.left_light.turn_on()
                     googleCar.right_light.turn_on()
@@ -114,15 +100,11 @@ def main() -> None:
                     googleCar.left_light.turn_off()
                     googleCar.right_light.turn_off()
                 else:
-                    googleCar.linkerwiel.stop()
-                    googleCar.rechterwiel.stop()
                     print("Achteruit rijden")
                     googleCar.linkerwiel.backward(20)
                     googleCar.rechterwiel.backward(20)
                     time.sleep(1)
         else:
-            googleCar.linkerwiel.stop()
-            googleCar.rechterwiel.stop()
             print("Achteruit rijden")
             googleCar.linkerwiel.backward(20)
             googleCar.rechterwiel.backward(20)

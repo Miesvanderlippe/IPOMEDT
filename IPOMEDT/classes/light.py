@@ -23,34 +23,34 @@ def main():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
+    left_light = Light(26)
     right_light = Light(21)
-    left_light = Light(20)
-    siren_blue = Light(16)
-    siren_red = Light(26)
+    red_sirene = Light(20)
+    blue_sirene = Light(16)
+
+    left_light.turn_off()
+    right_light.turn_off()
+    red_sirene.turn_off()
+    blue_sirene.turn_off()
+
+    time.sleep(2)
 
     left_light.turn_on()
-    time.sleep(2)
-
+    time.sleep(0.5)
     right_light.turn_on()
-    time.sleep(2)
 
-    siren_blue.turn_on()
-    time.sleep(2)
+    time.sleep(0.5)
+    red_sirene.turn_on()
+    time.sleep(0.5)
+    blue_sirene.turn_on()
+    time.sleep(0.5)
 
-    siren_red.turn_on()
-    time.sleep(2)
+    time.sleep(10)
 
-    for i in range(0, 100):
-        right_light.dim(i)
-        left_light.dim(i)
-        time.sleep(0.1)
-
-    right_light.turn_off()
     left_light.turn_off()
-    siren_red.turn_off()
-    siren_blue.turn_off()
-
-
+    right_light.turn_off()
+    red_sirene.turn_off()
+    blue_sirene.turn_off()
 
 if __name__ == '__main__':
     main()
