@@ -33,8 +33,8 @@ def main() -> None:
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    testmotor1 = Motor([10, 9])
-    testmotor2 = Motor([8, 7])
+    testmotor1 = Motor([9, 10])
+    testmotor2 = Motor([7, 8])
 
     testmotor1.forward(30)
     time.sleep(0)
