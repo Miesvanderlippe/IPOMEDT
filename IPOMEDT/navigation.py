@@ -20,14 +20,15 @@ def main() -> None:
     lineFollow = LineFollower(25)
     carClass = CarClass()
 
-    direction_time = 10
+    timer_left = 0
+    timer_right = 0
 
     try:
         while True:
             light1.turn_on()
             light2.turn_on()
             time.sleep(0.2)
-            if lineFollow.poll() is True:
+            if lineFollow.poll() is False:
                 print("Black line")
                 motor1.forward(12)
                 motor2.forward(12)
@@ -36,27 +37,25 @@ def main() -> None:
                 print("not black line " + str(lineFollow.poll()))
                 motor1.stop()
                 motor2.stop()
-                time.sleep(0.5)
+                time.sleep(0.3)
 
-                while lineFollow.poll() is False:
-                    time.sleep(0.5)
-
-                    # kijk rechts
-                    print("kijk naar rechts " + str(lineFollow.poll()))
-                    motor1.forward(12)
-                    motor2.backward(12)
-                    time.sleep(0.2)
-
-                    # kijk links
+                # if voor rechts kijken met counter
+                if timer_left < 5:
                     print("kijk naar links " + str(lineFollow.poll()))
-                    motor1.backward(12)
-                    motor2.forward(12)
+                    motor1.forward(12 + timer_left)
+                    motor2.backward(12 + timer_left)
                     time.sleep(0.2)
+                    timer_left = timer_left + 1
 
-                    # kijk vooruit
-                    print("kijk vooruit " + str(lineFollow.poll()))
-                    motor1.forward(12)
-                    motor2.forward(12)
+                # if voor links kijken met counter
+                if timer_right < 5:
+                    print("kijk naar rechts " + str(lineFollow.poll()))
+                    motor1.backward(12 + timer_right)
+                    motor2.forward(12 + timer_right)
+                    time.sleep(0.2)
+                    timer_right = timer_right + 1
+
+                print(timer_left)
 
     except KeyboardInterrupt:
         GPIO.cleanup()
