@@ -14,11 +14,11 @@ class GoogleCar:
     def rechtsaf (self, speed):
         # draai rechts
         self.linkerwiel.forward(speed)
-        # self.rechterwiel.backward(speed)
+        self.rechterwiel.backward(speed)
 
     def linksaf (self, speed):
         # draai rechts
-        # self.linkerwiel.backward(speed)
+        self.linkerwiel.backward(speed)
         self.rechterwiel.forward(speed)
 
 
@@ -37,6 +37,10 @@ def main() -> None:
         googleCar.linkerwiel.forward(20)
         googleCar.rechterwiel.forward(20)
         time.sleep(1)
+        # googleCar.linkerwiel.stop()
+        # googleCar.rechterwiel.stop()
+        # time.sleep(0.2)
+
         if sensor.poll() > 6:
             randomCheck = random.choice([True, False])
 
@@ -52,7 +56,7 @@ def main() -> None:
                         googleCar.rechterwiel.forward(20)
                         time.sleep(1)
                     else:
-                        print("Rechts draaien")
+                        print("naar Rechts draaien")
                         googleCar.rechtsaf(50)
                         time.sleep(0.4)
 
@@ -69,10 +73,12 @@ def main() -> None:
                         googleCar.linksaf(50)
                         time.sleep(0.4)
         else:
-            continue
+            googleCar.linkerwiel.backward(20)
+            googleCar.rechterwiel.backward(20)
+            time.sleep(1)
 
 if __name__ == '__main__':
     try:
         main()
-    except KeyboardInterupt:
+    except KeyboardInterrupt:
         GPIO.cleanup()
