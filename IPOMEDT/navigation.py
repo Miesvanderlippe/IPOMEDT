@@ -28,7 +28,7 @@ def main() -> None:
             light1.turn_on()
             light2.turn_on()
             time.sleep(0.2)
-            if lineFollow.poll() is False:
+            if lineFollow.poll() is True:
                 print("Black line")
                 motor1.forward(12)
                 motor2.forward(12)
@@ -37,25 +37,23 @@ def main() -> None:
                 print("not black line " + str(lineFollow.poll()))
                 motor1.stop()
                 motor2.stop()
-                time.sleep(0.3)
-
-                # if voor rechts kijken met counter
-                if timer_left < 5:
-                    print("kijk naar links " + str(lineFollow.poll()))
-                    motor1.forward(12 + timer_left)
-                    motor2.backward(12 + timer_left)
-                    time.sleep(0.2)
-                    timer_left = timer_left + 1
+                time.sleep(0.2)
 
                 # if voor links kijken met counter
-                if timer_right < 5:
+                if timer_right < 20:
                     print("kijk naar rechts " + str(lineFollow.poll()))
                     motor1.backward(12 + timer_right)
                     motor2.forward(12 + timer_right)
                     time.sleep(0.2)
-                    timer_right = timer_right + 1
+                    timer_right = timer_right + 5
 
-                print(timer_left)
+                # if voor rechts kijken met counter
+                if timer_left < 20:
+                    print("kijk naar links " + str(lineFollow.poll()))
+                    motor1.forward(12 + timer_left)
+                    motor2.backward(12 + timer_left)
+                    time.sleep(0.2)
+                    timer_left = timer_left + 5
 
     except KeyboardInterrupt:
         GPIO.cleanup()
