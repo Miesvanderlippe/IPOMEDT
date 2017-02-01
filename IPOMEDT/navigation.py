@@ -40,37 +40,24 @@ def main() -> None:
 
                 while lineFollow.poll() is False:
                     time.sleep(0.5)
-                    if direction_time <= 10:
-                        # kijk rechts
-                        print("kijk naar rechts " + str(lineFollow.poll()))
-                        motor1.forward(12)
-                        motor2.backward(12)
-                        time.sleep(0.2)
-                        direction_time = direction_time - 1
 
-                    # timer terug naar 10
-                    direction_time = 10
+                    # kijk rechts
+                    print("kijk naar rechts " + str(lineFollow.poll()))
+                    motor1.forward(12)
+                    motor2.backward(12)
+                    time.sleep(0.2)
 
-                    if direction_time <= 10:
-                        # kijk links
-                        print("kijk naar links " + str(lineFollow.poll()))
-                        motor1.backward(12)
-                        motor2.forward(12)
-                        time.sleep(0.2)
-                        direction_time = direction_time - 1
+                    # kijk links
+                    print("kijk naar links " + str(lineFollow.poll()))
+                    motor1.backward(12)
+                    motor2.forward(12)
+                    time.sleep(0.2)
 
-                    # timer terug naar 10
-                    direction_time = 10
+                    # kijk vooruit
+                    print("kijk vooruit " + str(lineFollow.poll()))
+                    motor1.forward(12)
+                    motor2.forward(12)
 
-                    if direction_time <= 10:
-                        # kijk vooruit
-                        print("kijk vooruit " + str(lineFollow.poll()))
-                        motor1.forward(12)
-                        motor2.forward(12)
-                        direction_time = direction_time - 1
-
-                    # timer terug naar 10
-                    direction_time = 10
     except KeyboardInterrupt:
         GPIO.cleanup()
 
