@@ -6,7 +6,10 @@ from timeit import default_timer as timer
 class UltraSonic:
 
     def __init__(self, pins: list):
-
+        """
+        Constructor voor de nabijheidssensor
+        :param pins: lijst met pins die de sensor gebruikt [trigger, echo]
+        """
         self.trigger = pins[0]
         self.echo = pins[1]
         self.last_poll = timer()
@@ -15,7 +18,11 @@ class UltraSonic:
         GPIO.setup(self.echo, GPIO.IN)
 
     def poll(self, depth=3):
-
+        """
+        Kijkt hoever de sensor bij iets vandaan is.
+        Niet te snel achter elkaar aanroepen, dit geeft inaccurate gegevens.
+        :return: Afstand met 2 punten precisie.
+        """
         if depth < 1:
             return 0
 
@@ -30,6 +37,9 @@ class UltraSonic:
         if wait > 0:
             time.sleep(wait)
 
+        GPIO.output(self.trigger, False)
+
+        # poll - geeft het signaal aan de sensor om te meten.
         GPIO.output(self.trigger, True)
         time.sleep(0.00001)
         GPIO.output(self.trigger, False)
@@ -43,6 +53,9 @@ class UltraSonic:
         while GPIO.input(self.echo) == 1:
             stop_time = time.time()
 
+        # De tijd die het gekost heeft voor de sensor om van high naar low
+        # te gaan is de tijd die het duurde voor het geluid om terug te keren
+        # duur * geluidssnelheid = afstand. Rekenkunde enzo.
         elapsed_time = stop_time - start_time
         distance = elapsed_time * 34326
 
