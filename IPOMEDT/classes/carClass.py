@@ -8,7 +8,7 @@ class CarClass:
         self.motor2 = Motor([8, 7])
 
     def turnLeft(self, speed, ratio):
-        self.motor1.forward(speed * ratio)
+        self.motor1.forward(speed * (ratio))
         self.motor2.backward(speed * ratio)
 
     def turnRight(self, speed, ratio):
