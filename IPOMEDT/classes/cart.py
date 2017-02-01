@@ -17,8 +17,11 @@ class Cart:
     def __init__(self):
         self.l_wheel = Motor([9, 10])
         self.r_wheel = Motor([7, 8])
-        self.l_light = Light(20)
-        self.r_light = Light(21)
+        self.left_light = Light(26)
+        self.right_light = Light(21)
+        self.red_sirene = Light(20)
+        self.blue_sirene = Light(16)
+
         self.ultrasonic = UltraSonic([17, 18])
         self.prev_turn = 'left'
         self.running = False
@@ -62,6 +65,14 @@ class Cart:
         self.r_wheel.backward(speed)
         self.l_wheel.backward(speed)
 
+    def turn_on_lights(self):
+        self.right_light.turn_on()
+        self.left_light.turn_on()
+
+    def turn_off_lights(self):
+        self.right_light.turn_off()
+        self.left_light.turn_off()
+
     def start_sirene(self):
         self.running = True
         self.thread = Thread(target=self.siren_loop)
@@ -72,8 +83,8 @@ class Cart:
         self.thread.do_run = False
         self.thread.join()
 
-        self.l_light.dim(70)
-        self.r_light.dim(70)
+        self.red_sirene.turn_off()
+        self.blue_sirene.turn_off()
 
     @property
     def siren_running(self):
@@ -81,24 +92,24 @@ class Cart:
 
     def siren_loop(self):
         while self.running:
-            self.l_light.dim(100)
-            self.r_light.dim(100)
+            self.red_sirene.turn_on()
+            self.blue_sirene.turn_on()
             time.sleep(0.05)
 
-            self.l_light.dim(0)
-            self.r_light.dim(0)
+            self.red_sirene.turn_off()
+            self.blue_sirene.turn_off()
             time.sleep(0.05)
 
-            self.r_light.dim(100)
+            self.blue_sirene.turn_on()
             time.sleep(0.05)
 
-            self.r_light.dim(0)
+            self.blue_sirene.turn_off()
             time.sleep(0.05)
 
-            self.l_light.dim(100)
+            self.red_sirene.turn_on()
             time.sleep(0.05)
 
-            self.l_light.dim(0)
+            self.red_sirene.turn_off()
             time.sleep(0.05)
 
 
@@ -116,8 +127,10 @@ def main() -> None:
 
     time.sleep(2)
     cart.start_sirene()
+    cart.turn_on_lights()
 
     time.sleep(2)
+    cart.turn_off_lights()
     cart.stop_sirene()
 
 if __name__ == "__main__":
