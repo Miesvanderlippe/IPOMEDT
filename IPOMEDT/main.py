@@ -15,7 +15,7 @@ def main() -> None:
     linefollower = LineFollower(25)
     ultrasonic = UltraSonic([17, 18])
 
-
+    # sensor
     sensor = UltraSonic([17, 18])
     distance = sensor.poll()
 
