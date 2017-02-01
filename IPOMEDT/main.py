@@ -7,11 +7,10 @@ import time
 
 
 def main() -> None:
-    GPIO.cleanup()
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    testmotor1 = Motor([10, 9])
+    testmotor1 = Motor([10,9])
     testmotor2 = Motor([8, 7])
     linefollower = LineFollower(25)
     ultrasonic = UltraSonic([17, 18])
@@ -22,19 +21,18 @@ def main() -> None:
 
     while True:
         distance = sensor.poll()
-        if distance > 15:
-            testmotor1.forward()
-            testmotor2.forward()
-            time.sleep(0.5)
-            testmotor1.stop()
-            testmotor2.stop()
+        if distance > 5:
+            print(distance)
+            print("Afstand tot voorwerp")
+            testmotor1.forward(20)
+            testmotor2.forward(20)
         else:
-            testmotor1.forward()
-            testmotor2.backward()
-            time.sleep(0.5)
-            testmotor1.stop()
-            testmotor2.stop()
+            print("Linksaf")
+            testmotor1.forward(20)
+            testmotor2.backward(10)
+
 
 if __name__ == "__main__":
     main()
+
 
