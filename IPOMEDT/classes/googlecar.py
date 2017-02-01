@@ -33,41 +33,43 @@ def main() -> None:
 
     while True:
         # print(sensor.poll())
+        print("Rijden.....")
         googleCar.linkerwiel.forward(20)
         googleCar.rechterwiel.forward(20)
         time.sleep(1)
+        if sensor.poll() > 6:
+            randomCheck = random.choice([True, False])
 
-        while sensor.poll() < 6:
-            randomRichting = random.choice([True, False])
+            while randomCheck:
+                randomRichting = random.choice([True, False])
 
-            if randomRichting:
-                print("naar Links draaien")
-                googleCar.linksaf(50)
-                time.sleep(0.2)
-                if sensor.poll() > 6:
-                    googleCar.linkerwiel.forward(20)
-                    googleCar.rechterwiel.forward(20)
-                    time.sleep(1)
-                else:
-                    print("Rechts draaien")
-                    googleCar.rechtsaf(50)
-                    time.sleep(0.4)
-
-            else:
-                print("naar Rechts draaien")
-                googleCar.rechtsaf(50)
-                time.sleep(0.2)
-                googleCar.linkerwiel.forward(20)
-                googleCar.rechterwiel.forward(20)
-                time.sleep(1)
-                if sensor.poll() > 6:
-                    googleCar.linkerwiel.forward(20)
-                    googleCar.rechterwiel.forward(20)
-                    time.sleep(1)
-                else:
+                if randomRichting:
                     print("naar Links draaien")
                     googleCar.linksaf(50)
-                    time.sleep(0.4)
+                    time.sleep(0.2)
+                    if sensor.poll() > 6:
+                        googleCar.linkerwiel.forward(20)
+                        googleCar.rechterwiel.forward(20)
+                        time.sleep(1)
+                    else:
+                        print("Rechts draaien")
+                        googleCar.rechtsaf(50)
+                        time.sleep(0.4)
+
+                else:
+                    print("naar Rechts draaien")
+                    googleCar.rechtsaf(50)
+                    time.sleep(0.2)
+                    if sensor.poll() > 6:
+                        googleCar.linkerwiel.forward(20)
+                        googleCar.rechterwiel.forward(20)
+                        time.sleep(1)
+                    else:
+                        print("naar Links draaien")
+                        googleCar.linksaf(50)
+                        time.sleep(0.4)
+        else:
+            continue
 
 if __name__ == '__main__':
     try:
