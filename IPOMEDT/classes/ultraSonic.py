@@ -24,7 +24,7 @@ class UltraSonic:
 
         GPIO.output(self.trigger, False)
 
-        wait = 0.0025 - (timer() - self.last_poll)
+        wait = 0.01 - (timer() - self.last_poll)
         self.last_poll = timer()
 
         if wait > 0:
@@ -52,7 +52,7 @@ class UltraSonic:
             if retry > 0:
                 return retry
             else:
-                return 1000
+                return 1001
 
         return round(distance / 2, 3)
 
