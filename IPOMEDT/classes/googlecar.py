@@ -37,10 +37,11 @@ class GoogleCar:
 def main() -> None:
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
-    # initialiseer sonic en motor
 
+    # initialiseer sonic en motor
     sensor = UltraSonic([17, 18])
     googleCar = GoogleCar()
+
 
     googleCar.siren_blue.turn_on()
     googleCar.siren_red.turn_on()
@@ -49,6 +50,10 @@ def main() -> None:
 
     while True:
         # print(sensor.poll())
+        # sirene altijd aan houden
+        googleCar.siren_blue.turn_on()
+        googleCar.siren_red.turn_on()
+
         if sensor.poll() > 15:
             print(sensor.poll())
             randomRichting = randint(1, 3)
@@ -68,7 +73,7 @@ def main() -> None:
                 googleCar.left_light.turn_off()
 
             elif randomRichting == 3:
-                print("Rechtdoor!")
+                print("Rechtdoor rijden")
                 googleCar.vooruit(20)
                 sleep(0.5)
 
