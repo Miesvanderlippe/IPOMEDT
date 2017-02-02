@@ -47,11 +47,13 @@ class Cart:
 
     def turn_left_tick(self, ticks=1, speed=20, ratio=-1):
         self.turn_left(speed, ratio)
-        time.sleep(0.05 * ticks)
+        time.sleep(0.1 * ticks)
+        self.stop()
 
     def turn_right_tick(self, ticks=1, speed=20, ratio=-1):
         self.turn_right(speed, ratio)
-        time.sleep(0.05 * ticks)
+        time.sleep(0.1 * ticks)
+        self.stop()
 
     def stop(self):
         self.l_wheel.stop()
