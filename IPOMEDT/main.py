@@ -7,8 +7,9 @@ class SearchAndDestroy:
 
     def __init__(self):
         self.cart = Cart()
-        self.max_scan_distance = 70.0
+        self.max_scan_distance = 100.0
         self.cart.start_sirene()
+        self.previous_successful_turn = 'left'
 
     def run(self):
         self.loop()
@@ -22,8 +23,10 @@ class SearchAndDestroy:
 
             # probably hit a wall.
             if round(distance) == round(prev_distance) and distance < 10:
+                self.cart.backward(40)
+                time.sleep(0.2)
+                self.cart.turn_right_tick(8)
                 self.turret()
-                print("MUUR!")
 
             prev_distance = distance
             print(distance)
@@ -33,10 +36,13 @@ class SearchAndDestroy:
                 if not self.cart.siren_running:
                     self.cart.start_sirene()
 
-                if distance > (self.max_scan_distance / 2):
-                    self.cart.forward(30)
+                if distance > 90:
+                    speed = 100
                 else:
-                    self.cart.forward(20)
+                    speed = distance + 10
+
+                self.cart.forward(speed)
+
                 time.sleep(0.1)
                 self.cart.stop()
 
@@ -80,14 +86,16 @@ class SearchAndDestroy:
         if 1 < distance < self.max_scan_distance:
             return distance
 
+        self.cart.prev_turn = self.previous_successful_turn
+
         for i in range(5, 15):
             time.sleep(0.1)
-            direction = self.cart.prev_turn != 'right'
+            direction = self.cart.prev_turn == 'right'
 
             if direction:
-                self.cart.turn_right_tick(i * 0.7, 22)
+                self.cart.turn_right_tick(i * 1.4, 22)
             else:
-                self.cart.turn_left_tick(i * 0.7, 22)
+                self.cart.turn_left_tick(i * 1.4, 22)
 
             distance = self.poll_dis()
             print(distance)
