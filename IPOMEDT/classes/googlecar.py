@@ -15,6 +15,7 @@ class GoogleCar:
         self.left_light = Light(20)
         self.siren_blue = Light(16)
         self.siren_red = Light(26)
+        self.sensor = UltraSonic([17, 18])
 
     def rechtsaf(self, speed):  # draai rechts
         self.linkerwiel.forward(speed)
@@ -31,6 +32,15 @@ class GoogleCar:
     def achteruit(self, speed):  # achteruit rijden
         self.linkerwiel.backward(speed)
         self.rechterwiel.backward(speed)
+
+    def afstand_gem(self):
+        afstands_lijst = [self.sensor.poll(),
+                  self.sensor.poll(),
+                  self.sensor.poll(),
+                  self.sensor.poll(),
+                  self.sensor.poll()]
+
+        return sum(afstands_lijst) / len(afstands_lijst)
 
 
 def main() -> None:
@@ -49,7 +59,7 @@ def main() -> None:
         googleCar.siren_red.turn_on()
 
         if sensor.poll() > 7:  # alleen uitvoeren als de bot niet te dicht bij de obstakels is
-            print(sensor.poll())
+            print(googleCar.afstand_gem())
             randomRichting = randint(0, 2)  # kies een willekeurige richting
             start = timer()
 
@@ -71,16 +81,13 @@ def main() -> None:
 
             elif randomRichting == 2:  # rechtdoorgaan
                 print("Rechtdoor rijden")
-
-                while sensor.poll() > 7 and timer() - start < 0.5:
-                    print("Rechtdoor rijden")
+                while googleCar.afstand_gem() > 7 and timer() - start < 0.5:
                     googleCar.vooruit(20)  # alleen vooruit als het kan.
 
 
             else:
-
-                while sensor.poll() > 7 and timer() - start < 0.5:
-                    print("Rechtdoor rijden")
+                print("Rechtdoor rijden")
+                while googleCar.afstand_gem() > 7 and timer() - start < 0.5:
                     googleCar.vooruit(20)  # alleen vooruit als het kan.
 
         else:
