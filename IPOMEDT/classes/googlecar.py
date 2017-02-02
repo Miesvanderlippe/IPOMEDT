@@ -4,10 +4,12 @@ from motor import Motor
 from light import Light
 from time import sleep
 from random import randint
+from timeit import default_timer as timer
 
 
 class GoogleCar:
     def __init__(self):
+        # Nieuwe motoren en lichtjes aanmaken uit de Motor en Light Class
         self.linkerwiel = Motor([9, 10])
         self.rechterwiel = Motor([7, 8])
         self.right_light = Light(21)
@@ -26,10 +28,12 @@ class GoogleCar:
         self.rechterwiel.forward(speed)
 
     def vooruit(self, speed):
+        # vooruit rijden
         self.linkerwiel.forward(speed)
-        self.linkerwiel.forward(speed)
+        self.rechterwiel.forward(speed)
 
     def achteruit(self, speed):
+        # achteruit rijden
         self.linkerwiel.backward(speed)
         self.rechterwiel.backward(speed)
 
@@ -42,40 +46,45 @@ def main() -> None:
     sensor = UltraSonic([17, 18])
     googleCar = GoogleCar()
 
-
-    googleCar.siren_blue.turn_on()
-    googleCar.siren_red.turn_on()
-    googleCar.linkerwiel.stop()
-    googleCar.rechterwiel.stop()
+    last_richting = 0  # laatste richting bijhouden
 
     while True:
-        # print(sensor.poll())
-        # sirene altijd aan houden
+        # sirene lampjes altijd aan houden
         googleCar.siren_blue.turn_on()
         googleCar.siren_red.turn_on()
 
-        if sensor.poll() > 15:
+        if sensor.poll() > 7:  # alleen uitvoeren als de bot niet te dicht bij de obstakels is
             print(sensor.poll())
-            randomRichting = randint(1, 3)
+            randomRichting = randint(0, 2)  # kies een willekeurige richting
+            start = timer()
 
-            if randomRichting == 1:
+            if randomRichting == 0 and last_richting == 0:
                 print("naar Links draaien")
                 googleCar.left_light.turn_on()
                 googleCar.linksaf(50)
                 sleep(0.2)
                 googleCar.left_light.turn_off()
+                last_richting = 1
 
-            elif randomRichting == 2:
+            elif randomRichting == 1 and last_richting == 1:
                 print("naar Rechts draaien")
                 googleCar.rechtsaf(50)
                 googleCar.right_light.turn_on()
                 sleep(0.2)
                 googleCar.left_light.turn_off()
+                last_richting = 0
 
-            elif randomRichting == 3:
+            elif randomRichting == 2:
                 print("Rechtdoor rijden")
-                googleCar.vooruit(20)
-                sleep(0.5)
+
+                while sensor.poll() > 7 and timer() - start < 0.5:
+                    googleCar.vooruit(20)
+
+            else:
+
+                while sensor.poll() > 7 and timer() - start < 0.5:
+                    googleCar.vooruit(20)
+                    print("Rechtdoor rijden")
 
         else:
             print("Achteruit rijden")
