@@ -17,9 +17,9 @@ class Cart:
     def __init__(self):
         self.l_wheel = Motor([9, 10])
         self.r_wheel = Motor([7, 8])
-        self.left_light = Light(26)
+        self.left_light = Light(20)
         self.right_light = Light(21)
-        self.red_sirene = Light(20)
+        self.red_sirene = Light(26)
         self.blue_sirene = Light(16)
 
         self.ultrasonic = UltraSonic([17, 18])
