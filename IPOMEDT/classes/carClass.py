@@ -1,3 +1,4 @@
+import time
 from classes.motor import Motor
 
 
@@ -7,10 +8,12 @@ class CarClass:
         self.motor1 = Motor([10, 9])
         self.motor2 = Motor([8, 7])
 
-    def turnLeft(self, speed, ratio):
-        self.motor1.forward(speed * (ratio))
-        self.motor2.backward(speed * ratio)
+    def onBlack(self, speed):
+        self.motor1.forward(speed)
+        self.motor2.backward(speed - (speed / 3))
+        self.motor1.forward(10)
 
-    def turnRight(self, speed, ratio):
-        self.motor1.backward(speed * ratio)
-        self.motor2.forward(speed * ratio)
+    def onWhite(self, speed):
+        self.motor1.backward(speed - (speed / 3))
+        self.motor2.forward(speed)
+        self.motor1.backward(10)

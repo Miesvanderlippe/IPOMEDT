@@ -31,15 +31,12 @@ def main() -> None:
             time.sleep(0.2)
             if lineFollow.poll() is True:
                 print("Black line")
-                motor1.forward(12)
-                motor2.forward(12)
-                time.sleep(0.2)
+                carClass.onBlack(75)
             else:
                 print("not black line " + str(lineFollow.poll()))
-                motor1.stop()
-                motor2.stop()
-                time.sleep(0.2)
+                carClass.onWhite(75)
 
+                '''
                 # if voor links kijken met counter
                 if timer_right < 20:
                     print("kijk naar rechts " + str(lineFollow.poll()))
@@ -62,6 +59,7 @@ def main() -> None:
                     motor1.forward(12)
                     motor2.forward(12)
                     time.sleep(0.2)
+                '''
 
     except KeyboardInterrupt:
         GPIO.cleanup()
