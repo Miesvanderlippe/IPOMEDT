@@ -15,16 +15,28 @@ class SearchAndDestroy:
 
     def loop(self):
 
+        prev_distance = 0
+
         while True:
-            distance = self.poll_dis()
+            distance = self.poll_dis_reliable()
+
+            # probably hit a wall.
+            if round(distance) == round(prev_distance) and distance < 10:
+                self.turret()
+                print("MUUR!")
+
+            prev_distance = distance
             print(distance)
 
-            if distance < self.max_scan_distance and distance > 10:
+            if self.max_scan_distance > distance > 10:
 
                 if not self.cart.siren_running:
                     self.cart.start_sirene()
 
-                self.cart.forward(20)
+                if distance > (self.max_scan_distance / 2):
+                    self.cart.forward(30)
+                else:
+                    self.cart.forward(20)
                 time.sleep(0.1)
                 self.cart.stop()
 
@@ -32,11 +44,33 @@ class SearchAndDestroy:
                 if self.cart.siren_running:
                     self.cart.stop_sirene()
 
-                self.home()
+                if self.home() is None:
+                    self.turret()
+
+    def turret(self):
+        distance = self.poll_dis_reliable()
+
+        while distance > self.max_scan_distance or distance < 10:
+            self.cart.turn_right_tick(1)
+            distance = self.poll_dis_reliable()
+
+        print("returning: {0}".format(distance))
+        return distance
 
     def poll_dis(self):
         dist = self.cart.ultrasonic.poll()
         return dist if dist < 1000 else 0
+
+    def poll_dis_reliable(self):
+        polls = [
+            self.poll_dis(),
+            self.poll_dis(),
+            self.poll_dis(),
+            self.poll_dis(),
+            self.poll_dis(),
+        ]
+
+        return sum(polls) / len(polls)
 
     def home(self):
 
@@ -46,7 +80,7 @@ class SearchAndDestroy:
         if 1 < distance < self.max_scan_distance:
             return distance
 
-        for i in range(5, 20):
+        for i in range(5, 15):
             time.sleep(0.1)
             direction = self.cart.prev_turn != 'right'
 
@@ -67,6 +101,8 @@ class SearchAndDestroy:
             if 1 < distance < self.max_scan_distance:
                 return distance
             self.cart.turn_left_tick(1)
+
+        return None
 
 
 def main() -> None:
