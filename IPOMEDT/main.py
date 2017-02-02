@@ -1,4 +1,5 @@
 from classes.cart import Cart
+from timeit import default_timer as timer
 import RPi.GPIO as GPIO
 import time
 
@@ -7,9 +8,10 @@ class SearchAndDestroy:
 
     def __init__(self):
         self.cart = Cart()
-        self.max_scan_distance = 100.0
+        self.max_scan_distance = 70.0
         self.cart.start_sirene()
         self.previous_successful_turn = 'left'
+        self.cart.turn_on_lights()
 
     def run(self):
         self.loop()
@@ -17,19 +19,25 @@ class SearchAndDestroy:
     def loop(self):
 
         prev_distance = 0
+        time_start = timer()
 
         while True:
             distance = self.poll_dis_reliable()
 
             # probably hit a wall.
             if round(distance) == round(prev_distance) and distance < 10:
+                print("This is probably a wall")
+                self.cart.turn_off_lights()
+                time.sleep(0.2)
+                self.cart.turn_on_lights()
                 self.cart.backward(40)
                 time.sleep(0.2)
                 self.cart.turn_right_tick(8)
                 self.turret()
 
-            prev_distance = distance
-            print(distance)
+            if round(timer() - time_start, 1) % 0.5 == 0:
+                prev_distance = distance
+                print("setting prev distance")
 
             if self.max_scan_distance > distance > 10:
 
@@ -41,23 +49,24 @@ class SearchAndDestroy:
                 else:
                     speed = distance + 10
 
+                print("Chasing at speed {0}".format(speed))
                 self.cart.forward(speed)
-
-                time.sleep(0.1)
-                self.cart.stop()
 
             else:
                 if self.cart.siren_running:
                     self.cart.stop_sirene()
 
                 if self.home() is None:
+                    print("Homing failed")
                     self.turret()
 
     def turret(self):
+        print("Turning")
         distance = self.poll_dis_reliable()
 
         while distance > self.max_scan_distance or distance < 10:
-            self.cart.turn_right_tick(1)
+            self.cart.turn_right_tick(1.5, 23)
+
             distance = self.poll_dis_reliable()
 
         print("returning: {0}".format(distance))
@@ -79,7 +88,7 @@ class SearchAndDestroy:
         return sum(polls) / len(polls)
 
     def home(self):
-
+        print("Homing")
         distance = self.poll_dis()
         print(distance)
 
@@ -88,27 +97,19 @@ class SearchAndDestroy:
 
         self.cart.prev_turn = self.previous_successful_turn
 
-        for i in range(5, 15):
-            time.sleep(0.1)
-            direction = self.cart.prev_turn == 'right'
+        for i in range(1, 10):
+
+            direction = self.cart.prev_turn != 'right'
 
             if direction:
-                self.cart.turn_right_tick(i * 1.4, 22)
+                self.cart.turn_right_tick(i * 1.8, 23)
             else:
-                self.cart.turn_left_tick(i * 1.4, 22)
+                self.cart.turn_left_tick(i * 1.8, 23)
 
-            distance = self.poll_dis()
-            print(distance)
+            distance = self.poll_dis_reliable()
 
             if 1 < distance < self.max_scan_distance:
                 return distance
-
-        while True:
-            time.sleep(0.1)
-            distance = self.poll_dis()
-            if 1 < distance < self.max_scan_distance:
-                return distance
-            self.cart.turn_left_tick(1)
 
         return None
 
