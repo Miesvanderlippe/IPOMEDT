@@ -26,6 +26,12 @@ class SearchAndDestroy:
 
             # probably hit a wall.
             if round(distance) == round(prev_distance) and distance < 10:
+
+                time.sleep(0.5)
+
+                if round(distance) != round(self.poll_dis_reliable()):
+                    continue
+
                 print("This is probably a wall")
                 self.cart.turn_off_lights()
                 time.sleep(0.2)
