@@ -22,6 +22,7 @@ def main() -> None:
 
     timer_left = 0
     timer_right = 0
+    timer_forward = 0
 
     try:
         while True:
@@ -57,9 +58,11 @@ def main() -> None:
 
                 # als bijde timers eind hebben berijkt
                 if timer_left == 20 and timer_right == 20:
+                    print("Kijk vooruit")
                     motor1.forward(12)
                     motor2.forward(12)
-                    # geef counter mee
+                    time.sleep(0.2)
+
     except KeyboardInterrupt:
         GPIO.cleanup()
 
