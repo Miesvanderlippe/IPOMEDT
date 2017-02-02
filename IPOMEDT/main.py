@@ -24,33 +24,33 @@ def main() -> None:
     # wacht 0.1 seconden voordat hij begint met het uitvoeren van script
     time.sleep(0.1)
     # terwel de auto rijde op een zwarte stip voer de onderstande code uit:
-    while linefollower.poll() is True:
-        print("Auto rijd op zwart")
-        testmotor1.forward()
-        testmotor2.forward()
-        # terwel de afstandsmeter een obstakel heeft gedectecteerd van 10 <  centimeter of kleiner
-        while ultrasonic.poll() < 11:
-            # Mischien is afremmen onodig
-            print("Afremen")
-            testmotor1.stop()
-            testmotor2.stop()
-            # de robot gaat naar links
-            print("draai 90 grade naar links")
-            testmotor1.forward(10)
-            testmotor2.backwards(20)
-            time.sleep(0.5)
-            links = 1
-            # Als de afstandmeter een obstakel heeft gedecteerd na het draien naar links
-            if links == 1 & ultrasonic.poll() < 11:
-                print("opstakel  gedecteerd")
-                print("draai 180 grade naar rechts")
-                testmotor2.forward(10)
-                testmotor1.backward(20)
-                time.sleep(1.0)
+    try:
+        while linefollower.poll() is True:
+            print("Auto rijd op zwart")
+            testmotor1.forward()
+            testmotor2.forward()
+            # terwel de afstandsmeter een obstakel heeft gedectecteerd van 10 <  centimeter of kleiner
+            while ultrasonic.poll() < 11:
+                # Mischien is afremmen onodig
+                print("Afremen")
+                testmotor1.stop()
+                testmotor2.stop()
+                # de robot gaat naar links
+                print("draai 90 grade naar links")
+                testmotor1.forward(10)
+                testmotor2.backwards(20)
+                time.sleep(0.5)
+                links = 1
+                # Als de afstandmeter een obstakel heeft gedecteerd na het draien naar links
+                if links == 1 & ultrasonic.poll() < 11:
+                    print("opstakel  gedecteerd")
+                    print("draai 180 grade naar rechts")
+                    testmotor2.forward(10)
+                    testmotor1.backward(20)
+                    time.sleep(1.0)
 
-except KeyboardInterrupt:
-    GPIO.cleanup()
-    motor.stop()
+    except KeyboardInterrupt:
+        GPIO.cleanup()
 
 if __name__ == "__main__":
     main()
