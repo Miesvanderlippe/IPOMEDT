@@ -1,13 +1,12 @@
-import RPi.GPIO as GPIO # Import the GPIO Library import time # Import the Time library
+import RPi.GPIO as GPIO  # Import the GPIO Library import time # Import the Time library
 from ultraSonic import UltraSonic
 from motor import Motor
 from light import Light
-import time
-import random
+from time import sleep
+from random import randint
 
 
 class GoogleCar:
-
     def __init__(self):
         self.linkerwiel = Motor([9, 10])
         self.rechterwiel = Motor([7, 8])
@@ -16,19 +15,26 @@ class GoogleCar:
         self.siren_blue = Light(16)
         self.siren_red = Light(26)
 
-    def rechtsaf (self, speed):
+    def rechtsaf(self, speed):
         # draai rechts
         self.linkerwiel.forward(speed)
         self.rechterwiel.backward(speed)
 
-    def linksaf (self, speed):
+    def linksaf(self, speed):
         # draai rechts
         self.linkerwiel.backward(speed)
         self.rechterwiel.forward(speed)
 
+    def vooruit(self, speed):
+        self.linkerwiel.forward(speed)
+        self.linkerwiel.forward(speed)
+
+    def achteruit(self, speed):
+        self.linkerwiel.backward(speed)
+        self.rechterwiel.backward(speed)
+
 
 def main() -> None:
-
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     # initialiseer sonic en motor
@@ -40,75 +46,36 @@ def main() -> None:
     googleCar.siren_red.turn_on()
     googleCar.linkerwiel.stop()
     googleCar.rechterwiel.stop()
+
     while True:
         # print(sensor.poll())
-        if sensor.poll() > 6:
-
-            randomRichting = random.choice([1, 2, 3])
+        if sensor.poll() > 15:
+            print(sensor.poll())
+            randomRichting = randint(1, 3)
 
             if randomRichting == 1:
                 print("naar Links draaien")
                 googleCar.left_light.turn_on()
                 googleCar.linksaf(50)
-                time.sleep(0.2)
+                sleep(0.2)
                 googleCar.left_light.turn_off()
-                if sensor.poll() > 6:
-                    print("Rijden.....")
-                    googleCar.left_light.turn_on()
-                    googleCar.right_light.turn_on()
-                    googleCar.linkerwiel.forward(20)
-                    googleCar.rechterwiel.forward(20)
-                    time.sleep(1)
-                    googleCar.left_light.turn_off()
-                    googleCar.right_light.turn_off()
-                else:
-                    print("naar Rechts draaien")
-                    googleCar.right_light.turn_on()
-                    googleCar.rechtsaf(50)
-                    time.sleep(0.4)
-                    googleCar.right_light.turn_off()
 
             elif randomRichting == 2:
                 print("naar Rechts draaien")
                 googleCar.rechtsaf(50)
                 googleCar.right_light.turn_on()
-                time.sleep(0.2)
+                sleep(0.2)
                 googleCar.left_light.turn_off()
-                if sensor.poll() > 6:
-                    print("Rijden.....")
-                    googleCar.left_light.turn_on()
-                    googleCar.right_light.turn_on()
-                    googleCar.linkerwiel.forward(20)
-                    googleCar.rechterwiel.forward(20)
-                    time.sleep(1)
-                    googleCar.left_light.turn_off()
-                    googleCar.right_light.turn_off()
-                else:
-                    print("naar Links draaien")
-                    googleCar.left_light.turn_on()
-                    googleCar.linksaf(50)
-                    time.sleep(0.4)
-                    googleCar.left_light.turn_off()
+
             elif randomRichting == 3:
-                if sensor.poll() > 6:
-                    print("Rijden.....")
-                    googleCar.left_light.turn_on()
-                    googleCar.right_light.turn_on()
-                    googleCar.linkerwiel.forward(20)
-                    googleCar.rechterwiel.forward(20)
-                    time.sleep(1)
-                    googleCar.left_light.turn_off()
-                    googleCar.right_light.turn_off()
-                else:
-                    print("Achteruit rijden")
-                    googleCar.linkerwiel.backward(20)
-                    googleCar.rechterwiel.backward(20)
-                    time.sleep(1)
+                print("Rechtdoor!")
+                googleCar.vooruit(20)
+                sleep(0.5)
+
         else:
             print("Achteruit rijden")
-            googleCar.linkerwiel.backward(20)
-            googleCar.rechterwiel.backward(20)
-            time.sleep(1)
+            googleCar.achteruit(20)
+            sleep(1)
 
 
 if __name__ == '__main__':
