@@ -8,7 +8,7 @@ class SearchAndDestroy:
 
     def __init__(self):
         self.cart = Cart()
-        self.max_scan_distance = 70.0
+        self.max_scan_distance = 100.0
         self.cart.start_sirene()
         self.previous_successful_turn = 'left'
         self.cart.turn_on_lights()
@@ -101,17 +101,21 @@ class SearchAndDestroy:
         if 1 < distance < self.max_scan_distance:
             return distance
 
-        self.cart.prev_turn = self.previous_successful_turn
+        if self.previous_successful_turn == 'right':
+            self.cart.prev_turn = 'left'
+        else:
+            self.cart.prev_turn = 'right'
 
-        for i in range(1, 10):
+        for i in range(2, 7):
 
             direction = self.cart.prev_turn != 'right'
 
             if direction:
-                self.cart.turn_right_tick(i * 1.8, 23)
+                self.cart.turn_right_tick(i * 1, 33)
             else:
-                self.cart.turn_left_tick(i * 1.8, 23)
+                self.cart.turn_left_tick(i * 1, 33)
 
+            time.sleep(0.2)
             distance = self.poll_dis_reliable()
 
             if 1 < distance < self.max_scan_distance:
