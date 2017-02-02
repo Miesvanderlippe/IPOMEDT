@@ -27,51 +27,76 @@ def main() -> None:
     de rechter wiel draait iets sneller waardoor hij weer recht op de baan terug komt"""
     # sensor
     sensor = UltraSonic([17, 18])
-    distance = sensor.poll()
     try:
         while True:
-                distance = sensor.poll()
-                if distance > 40 and linefollower.poll() is True: # kijkt of de afstand tot de muur groter of gelijk aan de muur is en dat hij op het zwarte geelte zit.
+                distance = ultrasonic.poll()
+                time.sleep(0.1)
+                if distance > 30 and  linefollower.poll() is True: # kijkt of de afstand tot de muur groter of gelijk aan de muur is en dat hij op het zwarte geelte zit.
                     print("Afstand tot voorwerp", distance)
                     testmotor1.stop() # stopt de auto
                     testmotor2.stop()
-                    testmotor1.forward(15) #rechter wiel
-                    testmotor2.forward(15) #linker wiel
+                    testmotor1.forward(40) #linker wiel
+                    testmotor2.forward(40) #rechter wiel
                     left_light.turn_on() # zet de lichten aan
                     right_light.turn_on()
                     siren_red.turn_on() # zet de sirene aan.
                     siren_blue.turn_on()
-                elif distance < 15: # kijkt of de afstand tot de muur kleiner of gelijk is aan 20 cm
-                    print("Linksaf")
-                    testmotor1.stop()
-                    testmotor2.stop()
-                    testmotor1.forward(5) # rechter wiel
-                    testmotor2.forward(10) # linker wiel
-                    right_light.turn_on()
-                    siren_blue.turn_on()
-                elif linefollower.poll() is False: # hij kijkt of hij op het witte is als dat waar is rijdt hij een stuk terug.
+
+                elif linefollower.poll() is False:  # hij kijkt of hij op het witte is als dat waar is rijdt hij een stuk terug.
                     print("U rijdt op wit, ga terug")
                     testmotor1.stop()
                     testmotor2.stop()
-                    testmotor1.backward(15) # rechter wiel
-                    testmotor2.backward(10) # linker wiel
+                    testmotor1.backward(10)  # linker wiel
+                    testmotor2.forward(20)  # rechter wiel
                     left_light.turn_on()
                     right_light.turn_on()
                     siren_blue.turn_on()
                     siren_red.turn_on()
-                elif distance < 40 and distance > 15: # hij kijkt of de afstand tot de muur tussen de 20 en 30 cm is, zo ja dan rijdt hij iets langzamer
-                    print("U nadert iets, rij langzamer")
+
+                elif distance < 40 and distance > 25:  # hij kijkt of de afstand tot de muur tussen de 15 en 40 cm is, zo ja dan rijdt hij iets langzamer
+                    print("U nadert iets, rij langzamer: ", distance )
                     testmotor1.stop()
                     testmotor2.stop()
-                    testmotor1.forward(12)
-                    testmotor2.forward(12)
-                    testmotor1.forward(10)
-                    testmotor2.forward(10)
+                    testmotor1.forward(35)
+                    testmotor2.forward(35)
+                    testmotor1.forward(25)
+                    testmotor2.forward(25)
                     left_light.turn_on()
                     right_light.turn_on()
                     siren_red.turn_on()
                     siren_blue.turn_on()
-                time.sleep(0.1)
+                    time.sleep(0.1)
+
+                elif distance < 30 and distance > 10 and linefollower.poll() is True:  # Kijkt of de afstand tot voorwerp kleiner is dan 25 en groter dan 10
+                    print("Linksaf: ", distance)
+                    testmotor1.stop()
+                    testmotor2.stop()
+                    testmotor1.forward(0)  # linker wiel
+                    testmotor2.forward(26)  # rechter wiel
+                    right_light.turn_on()
+                    siren_blue.turn_on()
+                    time.sleep(1.2)
+
+                elif distance > 8 or distance < 10 and linefollower.poll() is True:  # Als hij te dicht bij de muur komt, corrigeert hij zich door 1 wiel iets harder te laten gaan
+                    print ("Muur dichtbij, bijsturen!")
+                    testmotor1.stop()  # stopt de auto
+                    testmotor2.stop()
+                    testmotor1.forward(40)  # r wiel
+                    testmotor2.forward(37)  # l wiel
+                    left_light.turn_on()  # zet de lichten aan
+                    right_light.turn_on()
+                    siren_red.turn_on()  # zet de sirene aan.
+                    siren_blue.turn_on()
+
+
+                else:
+                    print("De motor stopt")
+                    testmotor1.stop()
+                    testmotor2.stop()
+                    time.sleep(2.5)
+
+
+
 
     except KeyboardInterrupt:
         GPIO.cleanup()
