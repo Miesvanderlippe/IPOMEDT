@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO  # Import the GPIO Library import time # Import the Time library
+import RPi.GPIO as GPIO
 from ultraSonic import UltraSonic
 from motor import Motor
 from light import Light
@@ -35,10 +35,10 @@ class GoogleCar:
 
     def afstand_gem(self):
         afstands_lijst = [self.sensor.poll(),
-                  self.sensor.poll(),
-                  self.sensor.poll(),
-                  self.sensor.poll(),
-                  self.sensor.poll()]
+                          self.sensor.poll(),
+                          self.sensor.poll(),
+                          self.sensor.poll(),
+                          self.sensor.poll()]
 
         return sum(afstands_lijst) / len(afstands_lijst)
 
@@ -47,10 +47,7 @@ def main() -> None:
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    # initialiseer afstandsmeten en motor
-    sensor = UltraSonic([17, 18])
     googleCar = GoogleCar()
-
     last_richting = 0  # laatste richting bijhouden
 
     while True:
@@ -58,7 +55,7 @@ def main() -> None:
         googleCar.siren_blue.turn_on()
         googleCar.siren_red.turn_on()
 
-        if sensor.poll() > 7:  # alleen uitvoeren als de bot niet te dicht bij de obstakels is
+        if googleCar.afstand_gem() > 7:  # alleen uitvoeren als de bot niet te dicht bij de obstakels is
             print(googleCar.afstand_gem())
             randomRichting = randint(0, 2)  # kies een willekeurige richting
             start = timer()
@@ -83,7 +80,6 @@ def main() -> None:
                 print("Rechtdoor rijden")
                 while googleCar.afstand_gem() > 7 and timer() - start < 0.5:
                     googleCar.vooruit(20)  # alleen vooruit als het kan.
-
 
             else:
                 print("Rechtdoor rijden")
