@@ -25,19 +25,17 @@ def main() -> None:
                 print("Auto rijd op zwart. afstand",distance)
                 testmotor1.forward(50)
                 testmotor2.forward(50)
+
             elif linefollower.poll() is True and distance < 20 & boolean is False:  # als de afstand kleiner is dan 10 centimeter en de boolean waar is voer de onderstande code uit
                 print("links", distance)
-                testmotor2.forward(50)  # rechter wiel gaat naar links
-                testmotor1.backward(70)
                 boolean is True
                 time.sleep(1.5)
+
             elif linefollower.poll() is True and distance < 20 & boolean is True:  # als de afstand kleiner is dan 10 centimeter en de boolean is niet waar is voer de onderstande code uit
-                print("rechts")
-                print(distance)
-                testmotor1.forward(50)  # linker wiel gaat naar rechts
-                testmotor2.backward(70)
+                print("rechts",distance)
                 boolean is False
-                time.sleep(1.5)
+                time.sleep(0.1)
+
             elif linefollower.poll() is False:  # False Als onder de auto de sensor white oppervlakte heeft gedectecteert
                 print("Auto rijd op wit")
                 print(distance)
